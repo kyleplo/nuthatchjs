@@ -1,5 +1,5 @@
 // Init
-var nthtch;
+var nthtch, nuthatch;
 // Classes do not get elevated, must declare here
 class NuthatchEvent {
  constructor (e,t,n,m){
@@ -10,6 +10,27 @@ class NuthatchEvent {
  }
  preventDefault (){
   this.e.preventDefault();
+ }
+}
+class NuthatchElement {
+ constructor (e,a,i,s){
+  this.type = e;
+  this.attributes = a || {};
+  this.innerHTML = i || "";
+  this.styles = s || {};
+  this.id = (Math.random().toString(36).slice(2,14));
+ }
+ getAttribute (a){
+  return this.attributes[a];
+ }
+ setAttribute (a,v) {
+  this.attributes[a] = v;
+ }
+}
+class NuthatchIndiv extends NuthatchElement {
+ constructor (e,a,i,s,v){
+  super(e,a,i,s);
+  this.iid = (Math.random().toString(36).slice(2,14));
  }
 }
 nthtch.createListeners = (m) => {
@@ -45,3 +66,30 @@ window.addEventListener("load",() => {
  nthtch.createListeners("keydown");
  nthtch.createListeners("contextmenu");
 });
+// Set up main functions
+nuthatch.register = function (e,a,b,c){
+ var innerHTML = (typeof b === "string" ? b : (typeof c === "string" ? c : ""));
+ var styles = (b === innerHTML ? (!!c ? c : {}) : (!!b ? b : {}));
+ var newelem = new NuthatchElement(e,a,innerHTML,styles);
+ return newelem.id;
+}
+nuthatch.assign = function (e,n,s){
+ if(!nuthatch[n]){
+  nthtch.log(n + " cannot be assigned, it does not exist. Make sure you call nuthatch.assign after nuthatch.register","error");
+  return false;
+ };
+ e.setAttribute("nuthatch",n);
+ e.innerHTML = nuthatch[n].innerHTML;
+ var styles = nuthatch[n].styles;
+ for(var i = 0;i < Object.keys(styles).length;i++){
+  var style = styles[Object.keys(styles)[i]];
+  e.style[Object.keys(styles)[i]] = style;
+ };
+ var attrs = nuthatch[n].attributes;
+ for(var i = 0;i < Object.keys(attrs).length;i++){
+  var attr = attrs[Object.keys(attrs)[i]];
+  e.style[Object.keys(attrs)[i]] = attr;
+ };
+ var n = new NuthatchIndiv(n,nuthatch[n].attributes,nuthatch[n].innerHTML,nuthatch[n].styles);
+ return n.iid;
+}
