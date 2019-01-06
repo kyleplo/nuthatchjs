@@ -64,7 +64,7 @@ window.addEventListener("load",() => {
  nthtch.dev = (location.search.indexOf("nuthatchdevmode=true") > -1);
  nthtch.log = (a,b,c) => {
   if(nthtch.dev){
-   console.[b || "log"](a,c);
+   console[b || "log"](a,c);
   };
  };
  // Set up main listeners
