@@ -1,5 +1,6 @@
 // Init
 var nthtch, nuthatch;
+nthtch = {};
 // Classes do not get elevated, must declare here
 class NuthatchEvent {
  constructor (e,t,n,m){
