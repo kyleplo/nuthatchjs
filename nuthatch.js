@@ -18,7 +18,8 @@ class NuthatchElement {
   this.attributes = a || {};
   this.innerHTML = i || "";
   this.styles = s || {};
-  this.id = (Math.random().toString(36).slice(2,14));
+  this.id = (Math.random().toString(36).slice(2,10));
+  this.events = {};
  }
  getAttribute (a){
   return this.attributes[a];
@@ -26,11 +27,20 @@ class NuthatchElement {
  setAttribute (a,v) {
   this.attributes[a] = v;
  }
+ on (e,h,i){
+  if(i){
+   if(this.events[e]){
+    this.events[e](h);
+   }
+  }else{
+   this.events[e] = h;
+  }
+ }
 }
 class NuthatchIndiv extends NuthatchElement {
  constructor (e,a,i,s,v){
   super(e,a,i,s);
-  this.iid = (Math.random().toString(36).slice(2,14));
+  this.id += (Math.random().toString(36).slice(2,10));
  }
 }
 nthtch.createListeners = (m) => {
@@ -40,7 +50,7 @@ nthtch.createListeners = (m) => {
    if(t.getAttribute("nuthatch").length > 0){
     nthtch.log(m + " event on " + t.getAttribute("nuthatch"));
     if(nuthatch[t.getAttribute("nuthatch")]){
-     nuthatch[t.getAttribute("nuthatch")].on(m,new NuthatchEvent(e,t,t.getAttribute("nuthatch"),m););
+     nuthatch[t.getAttribute("nuthatch")].on(m,new NuthatchEvent(e,t,t.getAttribute("nuthatch"),true));
     }else{
      nthtch.log(t.getAttribute("nuthatch") + ' is not registered! Make sure you have called nuthatch.register("' + t.getAttribute("nuthatch") + '") before letting the user interact with these elements.',"error");
     }
@@ -71,6 +81,7 @@ nuthatch.register = function (e,a,b,c){
  var innerHTML = (typeof b === "string" ? b : (typeof c === "string" ? c : ""));
  var styles = (b === innerHTML ? (!!c ? c : {}) : (!!b ? b : {}));
  var newelem = new NuthatchElement(e,a,innerHTML,styles);
+ nuthatch[e] = newelem;
  return newelem.id;
 }
 nuthatch.assign = function (e,n,s){
@@ -92,4 +103,8 @@ nuthatch.assign = function (e,n,s){
  };
  var n = new NuthatchIndiv(n,nuthatch[n].attributes,nuthatch[n].innerHTML,nuthatch[n].styles);
  return n.iid;
+}
+nuthatch.define = function (e,n,a,b,c){
+ nuthatch.register(n,a,b,c);
+ return nuthatch.assign(e,n);
 }
