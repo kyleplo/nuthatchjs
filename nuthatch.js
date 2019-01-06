@@ -1,6 +1,7 @@
 // Init
 var nthtch, nuthatch;
 nthtch = {};
+nuthatch = {};
 // Classes do not get elevated, must declare here
 class NuthatchEvent {
  constructor (e,t,n,m){
@@ -48,10 +49,10 @@ nthtch.createListeners = (m) => {
  document.addEventListener(m,(e) => {
   var t = e.target;
   while(t.tagName !== "HTML"){
-   if(t.getAttribute("nuthatch").length > 0){
+   if(t.getAttribute("nuthatch")){
     nthtch.log(m + " event on " + t.getAttribute("nuthatch"));
     if(nuthatch[t.getAttribute("nuthatch")]){
-     nuthatch[t.getAttribute("nuthatch")].on(m,new NuthatchEvent(e,t,t.getAttribute("nuthatch"),true));
+     nuthatch[t.getAttribute("nuthatch")].on(m,new NuthatchEvent(e,t,t.getAttribute("nuthatch")), true);
     }else{
      nthtch.log(t.getAttribute("nuthatch") + ' is not registered! Make sure you have called nuthatch.register("' + t.getAttribute("nuthatch") + '") before letting the user interact with these elements.',"error");
     }
